@@ -1,0 +1,15 @@
+{% extends 'iniadmatch/base/base.html' %}
+{% block title %}トップ{% endblock %}
+{% load static %}
+{% block css %}{% static 'iniadmatch/css/top.css'%}{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    {% for event in events %}
+        <p>{{ event }}</p>
+    {% endfor %}
+    <a href="{% url 'logout' %}">Logout</a><br>
+{% else %}
+    <a href="{% url 'social:begin' 'google-oauth2' %}">Login</a><br>
+{% endif %}
+{% endblock %}
