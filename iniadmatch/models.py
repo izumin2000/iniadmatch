@@ -60,4 +60,4 @@ class Booking(models.Model):
         return self.schedule.date
     
     def get_teacher_tags(self):
-        return self.schedule.teacher.tags
+        return self.schedule.teacher.tag
