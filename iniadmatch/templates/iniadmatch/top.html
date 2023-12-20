@@ -5,8 +5,17 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-    <p class="title">オフィスアワー一覧</p>
+<p class="title">オフィスアワー一覧</p>
+<div class="card-group">
+    <div class="card">
+        <div class="card-text">
+            <p><i class=""></i>石川<span class="card-title">教授</span></p>
+            <p><i class=""></i>11/11 13:00~15:00</p>
+            <p><i class=""></i>CS,研究の相談,python,デザイン</p>
+        </div>
+    </div>
+</div>
 {% else %}
-    <a href="{% url 'social:begin' 'google-oauth2' %}">Login</a><br>
+<a href="{% url 'social:begin' 'google-oauth2' %}">Login</a><br>
 {% endif %}
 {% endblock %}
