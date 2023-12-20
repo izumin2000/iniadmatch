@@ -1,0 +1,28 @@
+/* header */
+header {
+    background-color: #ffffff;
+    height: 50px;
+    padding: 10px 20px;
+    box-shadow: 0px 0px 10px #555;
+    color: #21ade5;
+}
+
+header .app-name {
+    float: left;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 7px;
+}
+
+header input {
+    float: left;
+    margin: 7px 0 0 20px;
+    width: 250px;
+    border-bottom: 1px solid #21ade5;
+}
+
+header a {
+    float: right;
+    font-size: 16px;
+    margin-top: 7px;
+}
