@@ -5,10 +5,7 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-    {% for event in events %}
-        <p>{{ event }}</p>
-    {% endfor %}
-    <a href="{% url 'logout' %}">Logout</a><br>
+    <p class="title">オフィスアワー一覧</p>
 {% else %}
     <a href="{% url 'social:begin' 'google-oauth2' %}">Login</a><br>
 {% endif %}
