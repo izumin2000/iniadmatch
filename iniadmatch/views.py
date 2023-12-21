@@ -3,15 +3,19 @@ from django.shortcuts import render, redirect
 from django.views import generic
 from .models import *
 
-class TopView(generic.ListView) :
+def isTeacher(user):
+    # user.groups.filter(name='TeacherGroup').exists()
+    return False
+
+class TopView(generic.ListView):
     template_name = 'iniadmatch/top.html'
     model = Schedule
 
-    def get(self, request, *args, **kwargs) :
-        if not request.user.is_authenticated :
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
             return redirect('login')
 
-        return render(request, self.template_name)
+        return render(request, self.template_name, {'is_teacher': isTeacher(request.user)})
 
 
 class ScheduleView(generic.DetailView) :

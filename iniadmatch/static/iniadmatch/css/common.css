@@ -95,3 +95,23 @@ header a {
     white-space: nowrap;
     line-height: 1.6em;
 }
+
+button {
+    width: 15rem;
+    height: 3rem;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    border: solid 2px #21ade5;
+    background-color:  #fff;
+    color: #21ade5;
+    text-align: center;
+}
+
+button:hover {
+    background-color: #21bee533;
+}
+
+button:active {
+    color: #FFF;
+    background-color: #21ade5;
+}
