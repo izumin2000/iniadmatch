@@ -1,23 +1,13 @@
 from django.contrib import admin
-from .models import Account, Tag, Teacher, Schedule, Booking
+from .models import *
 
+def register_admin(model):
+    class ModelAdmin(admin.ModelAdmin):
+        model = model
 
-@admin.register(Account)
-class AccountAdmin(admin.ModelAdmin):
-    list_display = ('name', 'get_gmail')
+    return ModelAdmin
 
-@admin.register(Tag)
-class TagAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+models = [Account, Tag, Teacher, Routine, Schedule, Booking]
 
-@admin.register(Teacher)
-class TeacherAdmin(admin.ModelAdmin):
-    list_display = ('get_name', 'get_gmail', 'tag')
-
-@admin.register(Schedule)
-class ScheduleAdmin(admin.ModelAdmin):
-    list_display = ('get_teacher_name', 'get_week_name', 'start', 'end')
-
-@admin.register(Booking)
-class BookingAdmin(admin.ModelAdmin):
-    list_display = ('get_student_name', 'get_teacher_name', 'get_schedule_data', 'get_teacher_tags')
+for model in models:
+    admin.site.register(model, register_admin(model))
