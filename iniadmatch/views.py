@@ -2,10 +2,10 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect
 from django.views import generic
 from .models import *
+import re
 
 def isTeacher(user):
-    # user.groups.filter(name='TeacherGroup').exists()
-    return False
+    return not bool(re.match(r'^s\df\d{9}$', user.username))
 
 class TopView(generic.ListView):
     template_name = 'iniadmatch/top.html'
