@@ -23,7 +23,7 @@ class Teacher(models.Model) :
 
 class Tag(models.Model) :
     name = models.CharField(default="", max_length=255)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='tags', null=True)
+    teacher = models.ForeignKey("Teacher", on_delete=models.CASCADE, related_name='tags', null=True)
     
     
 class Routine(models.Model) :
