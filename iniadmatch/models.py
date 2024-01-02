@@ -5,14 +5,14 @@ from django.contrib.auth.models import User
 
 class Account(models.Model) :
     name = models.CharField(default="", max_length=255, null=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="account", null=True)
 
     def get_mail(self) :
         return self.user.email
 
 
 class Teacher(models.Model) :
-    account = models.OneToOneField(Account, on_delete=models.CASCADE)
+    account = models.OneToOneField(Account, on_delete=models.CASCADE, related_name="teacher", null=True)
 
     def get_name(self) :
         return self.account.name
@@ -23,11 +23,11 @@ class Teacher(models.Model) :
 
 class Tag(models.Model) :
     name = models.CharField(default="", max_length=255)
-    teacher = models.ForeignKey("Teacher", on_delete=models.CASCADE, related_name='tags', null=True)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name="tags", null=True)
     
     
 class Routine(models.Model) :
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name="routines", null=True)
     week = models.IntegerField(default=0)
     start = models.TimeField(null=True)
     end = models.TimeField(null=True)
@@ -42,7 +42,7 @@ class Routine(models.Model) :
         
 
 class Schedule(models.Model) :
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name="schedules", null=True)
     start = models.DateTimeField(null=True)
     end = models.DateTimeField(null=True)
 
@@ -51,8 +51,8 @@ class Schedule(models.Model) :
     
 
 class Booking(models.Model) :
-    student = models.ForeignKey(Account, on_delete=models.CASCADE)
-    schedule = models.OneToOneField(Schedule, on_delete=models.CASCADE)
+    student = models.OneToOneField(Account, on_delete=models.CASCADE, related_name="bookibg", null=True)
+    schedule = models.OneToOneField(Schedule, on_delete=models.CASCADE, related_name="booking", null=True)
 
     def get_student_name(self) :
         return self.student.name
