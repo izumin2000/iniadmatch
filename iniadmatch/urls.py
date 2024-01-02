@@ -4,7 +4,7 @@ from iniadmatch import views
 
 urlpatterns = [
     path("", views.TopView.as_view(), name="top"),
-    path("schedule/<int:schedule>", views.ScheduleView.as_view(), name="schedule"),
+    path("schedule/<int:pk>", views.ScheduleView.as_view(), name="schedule"),
     path("search", views.SearchView.as_view(), name="search"),
     path("setting", views.SettingView.as_view(), name="setting"),
     path("login/", views.CustomLoginView.as_view(), name="login"),
