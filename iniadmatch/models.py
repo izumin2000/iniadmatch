@@ -42,7 +42,7 @@ class Routine(models.Model) :
         
 
 class Schedule(models.Model) :
-    routine = models.OneToOneField(Routine, on_delete=models.CASCADE, related_name="schedule", null=True)
+    routine = models.ForeignKey(Routine, on_delete=models.CASCADE, related_name="schedule", null=True)
     date = models.DateField(null=True)
 
     def get_teacher_name(self) :
