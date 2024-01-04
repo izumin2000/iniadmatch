@@ -41,6 +41,7 @@ class Routine(models.Model) :
     
         
 
+# TODO カラムはRoutineとDateFieldのみ？
 class Schedule(models.Model) :
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name="schedules", null=True)
     start = models.DateTimeField(null=True)
