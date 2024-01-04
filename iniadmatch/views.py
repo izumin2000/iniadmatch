@@ -9,13 +9,20 @@ def isTeacher(user):
 
 class TopView(generic.ListView):
     template_name = 'iniadmatch/top.html'
-    model = Schedule
 
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('login')
 
-        return render(request, self.template_name, {'is_teacher': isTeacher(request.user)})
+        is_teacher = isTeacher(request.user)
+        if is_teacher:
+            teacher = request.user
+            all_schedules = Schedule.objects.filter(teacher__account__user=teacher)
+            return render(request, self.template_name, {'is_teacher': is_teacher, 'schedules': all_schedules})
+        else:
+            all_schedules = Schedule.objects.all()
+            return render(request, self.template_name, {'is_teacher': is_teacher, 'schedules': all_schedules})
+
 
 
 class ScheduleView(generic.DetailView) :
@@ -33,6 +40,11 @@ class SettingView(generic.TemplateView) :
 
 class CustomLoginView(LoginView) :
     template_name = 'iniadmatch/top.html'
+    
+    def get_success_url(self):
+        print(f"\033[31m{0}\033[0m")
+        Account.objects.get_or_create(user=self.request.user, defaults={"name": self.request.user})
+        return super().get_success_url()
 
 
 class CustomLogoutView(LogoutView) :
