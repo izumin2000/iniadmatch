@@ -39,8 +39,10 @@ class SettingView(generic.TemplateView) :
     template_name = 'iniadmatch/setting.html'
     def get(self, request, *args, **kwargs):
         d = {}
+        
         teacher = request.user
         d["viewname"] = teacher.account.name
+        
         for week in range(5) :
             teacher_routine = Routine.objects.filter(teacher__account__user=teacher, week=week)
             if teacher_routine :
@@ -49,6 +51,7 @@ class SettingView(generic.TemplateView) :
             else :
                 d[f'week{week}_start'], d[f'week{week}_end'] = "", ""
                 
+        d["tags"] = " ".join([i.name for i in teacher.account.teacher.tags.all()])
         return render(request, self.template_name, d)
         
     def post(self, request, *args, **kwargs):
@@ -62,6 +65,7 @@ class SettingView(generic.TemplateView) :
         account_rec = Account.objects.filter(user=teacher).first()
         account_rec.name = viewname
         account_rec.save()
+        
         for week in range(5) :
             start, end = post.get(f'week{week}_start', ''), post.get(f'week{week}_end', '')
             teacher_routine = Routine.objects.filter(teacher__account__user=teacher, week=week)
@@ -75,8 +79,16 @@ class SettingView(generic.TemplateView) :
                 teacher_routine.start = datetime.datetime.strptime(start, "%H:%M").time()
                 teacher_routine.end = datetime.datetime.strptime(end, "%H:%M").time()
                 teacher_routine.save()
+                
                 d[f'week{week}_start'], d[f'week{week}_end'] = start, end
                 
+        tags = post.get('tags', '')
+        Tag.objects.filter(teacher__account__user=teacher).delete()
+        for tag in tags.split(" ") :
+            tag_rec = Tag.objects.create(teacher=teacher.account.teacher, name=tag)
+            tag_rec.save()
+        d["tags"] = tags
+        
         return render(request, self.template_name, d)
     
     

@@ -2,27 +2,31 @@ label {
     display: inline-block;
 }
 
+input {
+    display: inline-block;
+    margin: 0 0 0 10px;
+    border-bottom: 1px solid #21ade5;
+}
+
 .form-line {
     display: block;
     margin-bottom: 20px;
 }
 
 #viewname {
-    display: inline-block;
-    margin: 0 0 0 10px;
     width: 500px;
-    border-bottom: 1px solid #21ade5;
 }
 
 .week {
-    display: inline-block;
-    margin: 0 0 0 10px;
     width: 80px;
-    border-bottom: 1px solid #21ade5;
 }
 
 .form-split {
     display: inline-block;
+}
+
+#tags {
+    width: 750px;
 }
 
 button {
