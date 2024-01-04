@@ -2,54 +2,50 @@
 {% block title %}トップ{% endblock %}
 {% load static %}
 {% block css %}{% static 'iniadmatch/css/top.css'%}{% endblock %}
+{% load custom_tags %}
 
 {% block content %}
 {% if user.is_authenticated %}
     {% if is_teacher %}
         <p class="title">今後のオフィスアワーの予定</p>
         <div class="card-group">
-            <div class="card">
-                <a href="{% url 'schedule' 0 %}">
-                    <div class="card-text">
-                        <p><i class="fas fa-user"></i>泉川 叶多</p>
-                        <p><i class="far fa-clock"></i>11/11 13:00~15:00</p>
-                        <p><i class="fas fa-tags"></i>CS,研究の相談,python,デザイン</p>
-                    </div>
-                </a>
-            </div>
-            <div class="card">
-                <a href="{% url 'schedule' 0 %}">
-                    <div class="card-text">
-                        <p><i class="fas fa-user"></i>泉川 叶多</p>
-                        <p><i class="far fa-clock"></i>11/12 13:00~15:00</p>
-                        <p><i class="fas fa-tags"></i>CS</p>
-                    </div>
-                </a>
-            </div>
+            {% for schedule in schedules %}
+                <div class="card">
+                    <a href="{% url 'schedule' schedule.id %}">
+                        <div class="card-text">
+                            <p><i class="fas fa-user"></i>{{ schedule.teacher.account.name }}</p>
+                            <p><i class="far fa-clock"></i>{% display_schedule_time schedule.start schedule.end %}</p>
+                            <p><i class="fas fa-tags"></i>
+                                {% with teacher_tags=schedule.teacher.tags.all %}
+                                    {{ teacher_tags|tags_to_comma_separated_string }}
+                                {% endwith %}
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
         </div>
     {% else %}
         <p class="title">オフィスアワー一覧</p>
         <div class="card-group">
-            <div class="card">
-                <a href="{% url 'schedule' 0 %}">
-                    <div class="card-text">
-                        <p><i class="fas fa-user"></i>石川<span class="card-title">教授</span></p>
-                        <p><i class="far fa-clock"></i>11/11 13:00~15:00</p>
-                        <p><i class="fas fa-tags"></i>CS,研究の相談,python,デザイン</p>
-                    </div>
-                </a>
-            </div>
-            <div class="card">
-                <a href="{% url 'schedule' 0 %}">
-                    <div class="card-text">
-                        <p><i class="fas fa-user"></i>矢代<span class="card-title">教授</span></p>
-                        <p><i class="far fa-clock"></i>11/11 14:00~15:00</p>
-                        <p><i class="fas fa-tags"></i>IoT,研究の相談,python,OCamel</p>
-                    </div>
-                </a>
-            </div>
+            {% for schedule in schedules %}
+                <div class="card">
+                    <a href="{% url 'schedule' schedule.id %}">
+                        <div class="card-text">
+                            <p><i class="fas fa-user"></i>{{ schedule.teacher.account.name }}</p>
+                            <p><i class="far fa-clock"></i>{% display_schedule_time schedule.start schedule.end %}</p>
+                            <p><i class="fas fa-tags"></i>
+                                {% with teacher_tags=schedule.teacher.tags.all %}
+                                    {{ teacher_tags|tags_to_comma_separated_string }}
+                                {% endwith %}
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
         </div>
     {% endif %}
+<p>ユーザー：{{ user.username }}</p>
 <a href="{% url 'logout' %}">Logout</a><br>
 {% else %}
     <div id="logout-view">
