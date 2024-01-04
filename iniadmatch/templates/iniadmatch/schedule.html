@@ -2,6 +2,19 @@
 {% block title %}スケジュール{% endblock %}
 {% load static %}
 {% block css %}{% static 'iniadmatch/css/schedule.css'%}{% endblock %}
+{% load custom_tags %}
 
 {% block content %}
+<p class="title">今後のオフィスアワーの予定</p>
+
+<div id="schedule-info">
+    <p><i class="fas fa-user"></i>{{ schedule.teacher.account.name }}</p>
+    <p><i class="far fa-clock"></i>{% display_schedule_time schedule.start schedule.end %}</p>
+    <p><i class="fas fa-tags"></i>
+        {% with teacher_tags=schedule.teacher.tags.all %}
+            {{ teacher_tags|tags_to_comma_separated_string }}
+        {% endwith %}
+    </p>
+</div>
+
 {% endblock %}
