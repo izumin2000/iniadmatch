@@ -33,7 +33,7 @@ class Routine(models.Model) :
     end = models.TimeField(null=True)
 
     def get_teacher_name(self) :
-        return self.teacher.account.name
+        return self.teacher.get_name
     
     def get_week_name(self) :
         week_list = ["月曜日", "火曜日", "水曜日", "木曜日", "金曜日"]
@@ -41,14 +41,12 @@ class Routine(models.Model) :
     
         
 
-# TODO カラムはRoutineとDateFieldのみ？
 class Schedule(models.Model) :
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name="schedules", null=True)
-    start = models.DateTimeField(null=True)
-    end = models.DateTimeField(null=True)
+    routine = models.OneToOneField(Routine, on_delete=models.CASCADE, related_name="schedule", null=True)
+    date = models.DateField(null=True)
 
     def get_teacher_name(self) :
-        return self.teacher.account.name
+        return self.routine.get_teacher_name
     
 
 class Booking(models.Model) :
@@ -59,10 +57,7 @@ class Booking(models.Model) :
         return self.student.name
 
     def get_teacher_name(self) :
-        return self.schedule.teacher.account.name
+        return self.schedule.get_teacher_name
     
     def get_schedule_data(self) :
         return self.schedule.date
-    
-    def get_teacher_tags(self) :
-        return self.schedule.teacher.tag
