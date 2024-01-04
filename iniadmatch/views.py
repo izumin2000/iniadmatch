@@ -37,7 +37,16 @@ class SearchView(generic.TemplateView) :
 class SettingView(generic.TemplateView) :
     template_name = 'iniadmatch/setting.html'
 
-
+    def post(self, request, *args, **kwargs):
+        viewname = request.POST.get('viewname', '')
+        
+        teacher = request.user
+        account_rec = Account.objects.filter(user=teacher).first()
+        account_rec.name = viewname
+        account_rec.save()
+        return render(request, self.template_name, {'viewname': viewname})
+    
+    
 class CustomLoginView(LoginView) :
     template_name = 'iniadmatch/top.html'
     
