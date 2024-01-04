@@ -4,4 +4,12 @@
 {% block css %}{% static 'iniadmatch/css/setting.css'%}{% endblock %}
 
 {% block content %}
+<p class="title">設定</p>
+<form method="post" action="{% url 'setting' %}">
+    {% csrf_token %}
+    <label for="viewname">表示名</label>
+    <input type="text" id="viewname" name="viewname" placeholder="表示名を入力">
+    <button type="submit">保存</button>
+</form>
+
 {% endblock %}

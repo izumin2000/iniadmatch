@@ -1,0 +1,15 @@
+label {
+    display: inline-block;
+}
+
+#viewname {
+    display: inline-block;
+    margin: 0 0 0 10px;
+    width: 500px;
+    border-bottom: 1px solid #21ade5;
+}
+
+button {
+    display: block;
+    margin: 20px auto;
+}
