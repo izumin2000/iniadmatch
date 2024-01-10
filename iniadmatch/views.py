@@ -5,6 +5,8 @@ from .models import *
 import re
 import datetime
 
+SCHEDULE_WEEKS = 4
+
 def isTeacher(user):
     return not bool(re.match(r'^s\df\d{9}$', user.username))
 
@@ -14,14 +16,24 @@ class TopView(generic.ListView):
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('login')
+        
+        for routineRec in Routine.objects.all():
+            today = datetime.date.today()
+            weekday = routineRec.week
+            current_date = today
+            days_to_add = (weekday - today.weekday() + 7) % 7
+            current_date += datetime.timedelta(days=days_to_add)
+            for _ in range(SCHEDULE_WEEKS):
+                Schedule.objects.get_or_create(date=current_date, routine=routineRec)
+                current_date += datetime.timedelta(days=7)
 
         is_teacher = isTeacher(request.user)
         if is_teacher:
             teacher = request.user
-            all_schedules = Schedule.objects.filter(routine__teacher__account__user=teacher)
+            all_schedules = Schedule.objects.filter(routine__teacher__account__user=teacher).order_by("date")
             return render(request, self.template_name, {'is_teacher': is_teacher, 'schedules': all_schedules})
         else:
-            all_schedules = Schedule.objects.all()
+            all_schedules = Schedule.objects.all().order_by("date")
             return render(request, self.template_name, {'is_teacher': is_teacher, 'schedules': all_schedules})
 
 
