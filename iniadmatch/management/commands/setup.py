@@ -1,8 +1,9 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from iniadmatch.models import *
-from datetime import time, date
 from config.local_settings import SUB_DEV_USER_PASSWORD
+from django.db import connection
+
 
 class Command(BaseCommand) :
     def handle(self, *args, **options) :
@@ -11,6 +12,13 @@ class Command(BaseCommand) :
         Tag.objects.all().delete()
         Routine.objects.all().delete()
         Schedule.objects.all().delete()
+        
+        cursor = connection.cursor()
+        cursor.execute("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='iniadmatch_account'")
+        cursor.execute("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='iniadmatch_teacher'")
+        cursor.execute("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='iniadmatch_tag'")
+        cursor.execute("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='iniadmatch_routine'")
+        cursor.execute("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='iniadmatch_schedule'")
         
         teacher1_user = User.objects.get(username = "minecraftiniad")
         teacher2_user = User.objects.get(username = "kanapan2.poo")
@@ -27,24 +35,4 @@ class Command(BaseCommand) :
         teacher1 = Teacher.objects.create(account = teacher1_account)
         teacher2 = Teacher.objects.create(account = teacher2_account)
         teacher1.save()
-        teacher2.save()
-        
-        tag_1 = Tag.objects.create(name = "CS", teacher = teacher1) 
-        tag_2 = Tag.objects.create(name = "研究の相談", teacher = teacher1)
-        tag_3 = Tag.objects.create(name = "Django", teacher = teacher2)
-        tag_1.save()
-        tag_2.save()
-        tag_3.save()
-        
-        routine_1 = Routine.objects.create(teacher = teacher1, week = 0, start = time(13, 0), end = time(14, 30))
-        routine_2 = Routine.objects.create(teacher = teacher1, week = 2, start = time(14, 45), end = time(16, 15))
-        routine_3 = Routine.objects.create(teacher = teacher2, week = 2, start = time(14, 45), end = time(16, 15))
-        routine_1.save()        
-        routine_2.save()        
-        routine_3.save()        
-
-        Schedule.objects.create(routine=routine_1, date=date(2024, 1, 17)).save()
-        Schedule.objects.create(routine=routine_2, date=date(2024, 1, 18)).save()
-        Schedule.objects.create(routine=routine_2, date=date(2024, 1, 18)).save()
-        Schedule.objects.create(routine=routine_3, date=date(2024, 1, 16)).save()
-        
+        teacher2.save()        
