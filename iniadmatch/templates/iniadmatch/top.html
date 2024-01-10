@@ -13,10 +13,10 @@
                 <div class="card">
                     <a href="{% url 'schedule' schedule.id %}">
                         <div class="card-text">
-                            <p><i class="fas fa-user"></i>{{ schedule.teacher.account.name }}</p>
-                            <p><i class="far fa-clock"></i>{% display_schedule_time schedule.start schedule.end %}</p>
+                            <p><i class="fas fa-user"></i>{{ schedule.routine.teacher.account.name }}</p>
+                            <p><i class="far fa-clock"></i>{% display_schedule_time schedule.date schedule.routine.start schedule.routine.end %}</p>
                             <p><i class="fas fa-tags"></i>
-                                {% with teacher_tags=schedule.teacher.tags.all %}
+                                {% with teacher_tags=schedule.routine.teacher.tags.all %}
                                     {{ teacher_tags|tags_to_comma_separated_string }}
                                 {% endwith %}
                             </p>
@@ -32,10 +32,10 @@
                 <div class="card">
                     <a href="{% url 'schedule' schedule.id %}">
                         <div class="card-text">
-                            <p><i class="fas fa-user"></i>{{ schedule.teacher.account.name }}</p>
-                            <p><i class="far fa-clock"></i>{% display_schedule_time schedule.start schedule.end %}</p>
+                            <p><i class="fas fa-user"></i>{{ schedule.routine.teacher.account.name }}</p>
+                            <p><i class="far fa-clock"></i>{% display_schedule_time schedule.date schedule.routine.start schedule.routine.end %}</p>
                             <p><i class="fas fa-tags"></i>
-                                {% with teacher_tags=schedule.teacher.tags.all %}
+                                {% with teacher_tags=schedule.routine.teacher.tags.all %}
                                     {{ teacher_tags|tags_to_comma_separated_string }}
                                 {% endwith %}
                             </p>

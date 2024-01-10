@@ -1,14 +1,15 @@
 from django import template
-from django.template.defaultfilters import date
+from django.template.defaultfilters import date 
 
 register = template.Library()
 
 @register.simple_tag
-def display_schedule_time(start, end):
-    if start and end:
-        start_time_str = date(start, "n/j G:i")
+def display_schedule_time(day, start, end):
+    if day and start and end:
+        date_str = date(day, "n/j")
+        start_time_str = date(start, "G:i")
         end_time_str = date(end, "G:i")
-        return f"{start_time_str} ~ {end_time_str}"
+        return f"{date_str} {start_time_str} ~ {end_time_str}"
     else:
         return ""
 

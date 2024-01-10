@@ -18,7 +18,7 @@ class TopView(generic.ListView):
         is_teacher = isTeacher(request.user)
         if is_teacher:
             teacher = request.user
-            all_schedules = Schedule.objects.filter(teacher__account__user=teacher)
+            all_schedules = Schedule.objects.filter(routine__teacher__account__user=teacher)
             return render(request, self.template_name, {'is_teacher': is_teacher, 'schedules': all_schedules})
         else:
             all_schedules = Schedule.objects.all()
