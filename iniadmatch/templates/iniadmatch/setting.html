@@ -1,0 +1,56 @@
+{% extends 'iniadmatch/base/base.html' %}
+{% block title %}設定{% endblock %}
+{% load static %}
+{% block css %}{% static 'iniadmatch/css/setting.css'%}{% endblock %}
+
+{% block content %}
+<p class="title">設定</p>
+<form method="post" action="{% url 'setting' %}">
+    {% csrf_token %}
+    <div class="form-line">
+        <label for="viewname">表示名</label>
+        <input type="text" id="viewname" name="viewname" placeholder="表示名を入力" value="{{ viewname }}">
+    </div>
+    <div class="form-line">
+        <label>月曜日</label>
+        <input type="time" class="week" name="week0_start" value="{{ week0_start }}">
+        <p class="form-split">～</p>
+        <input type="time" class="week" name="week0_end" value="{{ week0_end }}">
+    </div>
+    <div class="form-line">
+        <label>火曜日</label>
+        <input type="time" class="week" name="week1_start" value="{{ week1_start }}">
+        <p class="form-split">～</p>
+        <input type="time" class="week" name="week1_end" value="{{ week1_end }}">
+    </div>
+    <div class="form-line">
+        <label>水曜日</label>
+        <input type="time" class="week" name="week2_start" value="{{ week2_start }}">
+        <p class="form-split">～</p>
+        <input type="time" class="week" name="week2_end" value="{{ week2_end }}">
+    </div>
+    <div class="form-line">
+        <label>木曜日</label>
+        <input type="time" class="week" name="week3_start" value="{{ week3_start }}">
+        <p class="form-split">～</p>
+        <input type="time" class="week" name="week3_end" value="{{ week3_end }}">
+    </div>
+    <div class="form-line">
+        <label>金曜日</label>
+        <input type="time" class="week" name="week4_start" value="{{ week4_start }}">
+        <p class="form-split">～</p>
+        <input type="time" class="week" name="week4_end" value="{{ week4_end }}">
+    </div>
+    <div class="form-line">
+        <label for="tags">タグ</label>
+        <input type="text" id="tags" name="tags" placeholder="タグを入力" value="{{ tags }}">
+    </div>
+    <button type="submit">保存</button>
+    <p>
+        ※時刻設定は開始時と終了時の両方の入力が無いと登録できません。<br>
+        ※時刻設定は入力内容が削除することができます。<br>
+        ※タグは半角スペースで複数入力可能です。<br>
+    </p>
+</form>
+<a href="{% url 'logout' %}" id="logout">ログアウト</a>
+{% endblock %}

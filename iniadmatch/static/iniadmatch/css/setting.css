@@ -1,0 +1,41 @@
+label {
+    display: inline-block;
+}
+
+input {
+    display: inline-block;
+    margin: 0 0 0 10px;
+    border-bottom: 1px solid #21ade5;
+}
+
+.form-line {
+    display: block;
+    margin-bottom: 20px;
+}
+
+#viewname {
+    width: 500px;
+}
+
+.week {
+    width: 80px;
+}
+
+.form-split {
+    display: inline-block;
+}
+
+#tags {
+    width: 750px;
+}
+
+button {
+    display: block;
+    margin: 20px auto;
+}
+
+#logout {
+    display: block;
+    margin-top: 20px;
+    text-decoration: underline;
+}

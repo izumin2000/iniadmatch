@@ -1,0 +1,29 @@
+#logout-view {
+    margin-top: 28vh
+}
+
+#logout-view h1 {
+    text-align: center;
+    font-size: 64px;
+    margin-bottom: 30px;
+}
+
+#logout-view p {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+
+#logout-view button {
+    display: block;
+    margin: 0 auto;
+}
+
+i {
+    margin-right: 5px;
+}
+
+#to-setting {
+    text-decoration: underline;
+    color: #21ade5;
+}

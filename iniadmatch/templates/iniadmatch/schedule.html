@@ -1,0 +1,38 @@
+{% extends 'iniadmatch/base/base.html' %}
+{% block title %}スケジュール{% endblock %}
+{% load static %}
+{% block css %}{% static 'iniadmatch/css/schedule.css'%}{% endblock %}
+{% load custom_tags %}
+
+{% block content %}
+<p class="title">オフィスアワーの詳細</p>
+
+<div id="schedule-info">
+    <p><i class="fas fa-user"></i>{{ schedule.routine.teacher.account.name }}</p>
+    <p><i class="far fa-clock"></i>{% display_schedule_time schedule.date schedule.routine.start schedule.routine.end %}</p>
+    <p><i class="fas fa-tags"></i>
+        {% with teacher_tags=schedule.routine.teacher.tags.all %}
+            {{ teacher_tags|tags_to_comma_separated_string }}
+        {% endwith %}
+    </p>
+</div>
+
+<div id="GoogleCalenderURL">
+    <a onclick="getGoogleCalenderURL()">
+    Googleカレンダーに登録
+    </a>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script>
+    function getGoogleCalenderURL() {
+        var url = "https://www.google.com/calendar/render?action=TEMPLATE"
+        url += "&text=オフィスアワー {{ schedule.routine.teacher.account.name }}"
+        url += "&dates={% url_schedule_time schedule.date schedule.routine.start schedule.routine.end %}"
+        url += "&add={{ schedule.routine.teacher.account.user.email }}"
+        window.open(url, '_blank')
+    }
+</script>
+{% endblock %}

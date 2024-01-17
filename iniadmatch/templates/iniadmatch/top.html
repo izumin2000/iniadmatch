@@ -2,14 +2,58 @@
 {% block title %}トップ{% endblock %}
 {% load static %}
 {% block css %}{% static 'iniadmatch/css/top.css'%}{% endblock %}
+{% load custom_tags %}
 
 {% block content %}
 {% if user.is_authenticated %}
-    {% for event in events %}
-        <p>{{ event }}</p>
-    {% endfor %}
-    <a href="{% url 'logout' %}">Logout</a><br>
+    {% if is_teacher %}
+        <p class="title">今後のオフィスアワーの予定</p>
+        <div class="card-group">
+            {% if schedules %}
+                {% for schedule in schedules %}
+                    <div class="card">
+                        <a href="{% url 'schedule' schedule.id %}">
+                            <div class="card-text">
+                                <p><i class="fas fa-user"></i>{{ schedule.routine.teacher.account.name }}</p>
+                                <p><i class="far fa-clock"></i>{% display_schedule_time schedule.date schedule.routine.start schedule.routine.end %}</p>
+                                <p><i class="fas fa-tags"></i>
+                                    {% with teacher_tags=schedule.routine.teacher.tags.all %}
+                                        {{ teacher_tags|tags_to_comma_separated_string }}
+                                    {% endwith %}
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>オフィスアワーの予定が一つもありません。<br><a href="{% url 'setting' %}" id="to-setting">こちら</a>から予定を登録できます</p>
+            {% endif %}
+        </div>
+    {% else %}
+        <p class="title">オフィスアワー一覧</p>
+        <div class="card-group">
+            {% for schedule in schedules %}
+                <div class="card">
+                    <a href="{% url 'schedule' schedule.id %}">
+                        <div class="card-text">
+                            <p><i class="fas fa-user"></i>{{ schedule.routine.teacher.account.name }}</p>
+                            <p><i class="far fa-clock"></i>{% display_schedule_time schedule.date schedule.routine.start schedule.routine.end %}</p>
+                            <p><i class="fas fa-tags"></i>
+                                {% with teacher_tags=schedule.routine.teacher.tags.all %}
+                                    {{ teacher_tags|tags_to_comma_separated_string }}
+                                {% endwith %}
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 {% else %}
-    <a href="{% url 'social:begin' 'google-oauth2' %}">Login</a><br>
+    <div id="logout-view">
+        <h1>INIAD Match</h1>
+        <p>オフィスアワーを活用しよう！</p>
+        <a href="{% url 'social:begin' 'google-oauth2' %}"><button type="button" onclick="location.href='#'">Login</button></a>
+    </div>
 {% endif %}
 {% endblock %}
