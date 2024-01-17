@@ -9,21 +9,25 @@
     {% if is_teacher %}
         <p class="title">今後のオフィスアワーの予定</p>
         <div class="card-group">
-            {% for schedule in schedules %}
-                <div class="card">
-                    <a href="{% url 'schedule' schedule.id %}">
-                        <div class="card-text">
-                            <p><i class="fas fa-user"></i>{{ schedule.routine.teacher.account.name }}</p>
-                            <p><i class="far fa-clock"></i>{% display_schedule_time schedule.date schedule.routine.start schedule.routine.end %}</p>
-                            <p><i class="fas fa-tags"></i>
-                                {% with teacher_tags=schedule.routine.teacher.tags.all %}
-                                    {{ teacher_tags|tags_to_comma_separated_string }}
-                                {% endwith %}
-                            </p>
-                        </div>
-                    </a>
-                </div>
-            {% endfor %}
+            {% if schedules %}
+                {% for schedule in schedules %}
+                    <div class="card">
+                        <a href="{% url 'schedule' schedule.id %}">
+                            <div class="card-text">
+                                <p><i class="fas fa-user"></i>{{ schedule.routine.teacher.account.name }}</p>
+                                <p><i class="far fa-clock"></i>{% display_schedule_time schedule.date schedule.routine.start schedule.routine.end %}</p>
+                                <p><i class="fas fa-tags"></i>
+                                    {% with teacher_tags=schedule.routine.teacher.tags.all %}
+                                        {{ teacher_tags|tags_to_comma_separated_string }}
+                                    {% endwith %}
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>オフィスアワーの予定が一つもありません。<br><a href="{% url 'setting' %}" id="to-setting">こちら</a>から予定を登録できます</p>
+            {% endif %}
         </div>
     {% else %}
         <p class="title">オフィスアワー一覧</p>
