@@ -17,4 +17,22 @@
     </p>
 </div>
 
+<div id="GoogleCalenderURL">
+    <a onclick="getGoogleCalenderURL()">
+    Googleカレンダーに登録
+    </a>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script>
+    function getGoogleCalenderURL() {
+        var url = "https://www.google.com/calendar/render?action=TEMPLATE"
+        url += "&text=オフィスアワー {{ schedule.routine.teacher.account.name }}"
+        url += "&dates={% url_schedule_time schedule.date schedule.routine.start schedule.routine.end %}"
+        url += "&add={{ schedule.routine.teacher.account.user.email }}"
+        window.open(url, '_blank')
+    }
+</script>
 {% endblock %}
