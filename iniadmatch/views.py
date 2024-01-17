@@ -17,14 +17,14 @@ class TopView(generic.ListView):
         if not request.user.is_authenticated:
             return redirect('login')
         
-        for routineRec in Routine.objects.all():
+        for routine_rec in Routine.objects.all():
             today = datetime.date.today()
-            weekday = routineRec.week
+            weekday = routine_rec.week
             current_date = today
             days_to_add = (weekday - today.weekday() + 7) % 7
             current_date += datetime.timedelta(days=days_to_add)
             for _ in range(SCHEDULE_WEEKS):
-                Schedule.objects.get_or_create(date=current_date, routine=routineRec)
+                Schedule.objects.get_or_create(date=current_date, routine=routine_rec)
                 current_date += datetime.timedelta(days=7)
 
         is_teacher = isTeacher(request.user)
@@ -42,9 +42,16 @@ class ScheduleView(generic.DetailView) :
     template_name = 'iniadmatch/schedule.html'
     model = Schedule
 
+    def get(self, request, *args, **kwargs):
+        is_teacher = isTeacher(request.user)
+        return render(request, self.template_name, {'is_teacher': is_teacher})
     
 class SearchView(generic.TemplateView) :
     template_name = 'iniadmatch/search.html'
+
+    def get(self, request, *args, **kwargs):
+        is_teacher = isTeacher(request.user)
+        return render(request, self.template_name, {'is_teacher': is_teacher})
 
 
 class SettingView(generic.TemplateView) :
@@ -108,7 +115,6 @@ class CustomLoginView(LoginView) :
     template_name = 'iniadmatch/top.html'
     
     def get_success_url(self):
-        print(f"\033[31m{0}\033[0m")
         Account.objects.get_or_create(user=self.request.user, defaults={"name": self.request.user})
         return super().get_success_url()
 
