@@ -2,6 +2,30 @@
 {% block title %}検索結果{% endblock %}
 {% load static %}
 {% block css %}{% static 'iniadmatch/css/search.css'%}{% endblock %}
+{% load custom_tags %}
 
 {% block content %}
+<p class="title">オフィスアワーの検索結果</p>
+<p id="result-p">「{{ word }}」の検索結果は{{schedules|length}}件見つかりました</p>
+<div class="card-group">
+    {% if schedules %}
+        {% for schedule in schedules %}
+            <div class="card">
+                <a href="{% url 'schedule' schedule.id %}">
+                    <div class="card-text">
+                        <p><i class="fas fa-user"></i>{{ schedule.routine.teacher.account.name }}</p>
+                        <p><i class="far fa-clock"></i>{% display_schedule_time schedule.date schedule.routine.start schedule.routine.end %}</p>
+                        <p><i class="fas fa-tags"></i>
+                            {% with teacher_tags=schedule.routine.teacher.tags.all %}
+                                {{ teacher_tags|tags_to_comma_separated_string }}
+                            {% endwith %}
+                        </p>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>ヒットしませんでした。</p>
+    {% endif %}
+</div>
 {% endblock %}

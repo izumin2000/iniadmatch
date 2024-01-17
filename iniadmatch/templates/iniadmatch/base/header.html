@@ -1,7 +1,10 @@
 <header>
     <a href="{% url 'top' %}" class="app-name">INIAD match</a>
     {% if user.is_authenticated %}
-        <input type="text" placeholder="タグを検索">
+        <form method="post" action="{% url 'search' %}">
+            {% csrf_token %}
+            <input type="text" name="word" placeholder="タグを検索">
+        </form>
         {% if is_teacher %}
             <a href="{% url 'setting' %}">設定</a>
         {% else %}

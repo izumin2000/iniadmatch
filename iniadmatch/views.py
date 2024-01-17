@@ -50,14 +50,21 @@ class ScheduleView(generic.DetailView) :
 class SearchView(generic.TemplateView) :
     template_name = 'iniadmatch/search.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['is_teacher'] = isTeacher(self.request.user)  
-        return context 
+    def post(self, request, *args, **kwargs):
+        d = {}
+        d['is_teacher'] = isTeacher(self.request.user) 
+        post = request.POST
+        word = post.get('word', '')
+        d["word"] = word
+        matching_tags = Tag.objects.filter(name__icontains=word)
+        schedules = Schedule.objects.filter(routine__teacher__tags__in=matching_tags)
+        d["schedules"] = schedules.order_by("date") if word else []
+        return render(request, self.template_name, d)
 
 
 class SettingView(generic.TemplateView) :
     template_name = 'iniadmatch/setting.html'
+    
     def get(self, request, *args, **kwargs):
         d = {}
         user = request.user
