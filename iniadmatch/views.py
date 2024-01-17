@@ -60,19 +60,19 @@ class SettingView(generic.TemplateView) :
     template_name = 'iniadmatch/setting.html'
     def get(self, request, *args, **kwargs):
         d = {}
-        
-        teacher = request.user
-        d["viewname"] = teacher.account.name
+        user = request.user
+        d["is_teacher"] = isTeacher(user)
+        d["viewname"] = user.account.name
         
         for week in range(5) :
-            teacher_routine = Routine.objects.filter(teacher__account__user=teacher, week=week)
+            teacher_routine = Routine.objects.filter(teacher__account__user=user, week=week)
             if teacher_routine :
                 teacher_routine = teacher_routine.first()
                 d[f'week{week}_start'], d[f'week{week}_end'] = teacher_routine.start, teacher_routine.end
             else :
                 d[f'week{week}_start'], d[f'week{week}_end'] = "", ""
                 
-        d["tags"] = " ".join([i.name for i in teacher.account.teacher.tags.all()])
+        d["tags"] = " ".join([i.name for i in user.account.teacher.tags.all()])
         return render(request, self.template_name, d)
         
     def post(self, request, *args, **kwargs):
