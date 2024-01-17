@@ -42,16 +42,18 @@ class ScheduleView(generic.DetailView) :
     template_name = 'iniadmatch/schedule.html'
     model = Schedule
 
-    def get(self, request, *args, **kwargs):
-        is_teacher = isTeacher(request.user)
-        return render(request, self.template_name, {'is_teacher': is_teacher})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_teacher'] = isTeacher(self.request.user)  
+        return context 
     
 class SearchView(generic.TemplateView) :
     template_name = 'iniadmatch/search.html'
 
-    def get(self, request, *args, **kwargs):
-        is_teacher = isTeacher(request.user)
-        return render(request, self.template_name, {'is_teacher': is_teacher})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_teacher'] = isTeacher(self.request.user)  
+        return context 
 
 
 class SettingView(generic.TemplateView) :
